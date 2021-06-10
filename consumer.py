@@ -11,7 +11,8 @@ def json_deserializer(v):
         return None
 
 
-consumer = KafkaConsumer('pageview', bootstrap_servers=['localhost:9092'],value_deserializer=json_deserializer)
+consumer = KafkaConsumer(bootstrap_servers=['localhost:9092'],value_deserializer=json_deserializer)
+consumer.subscribe(['pageview','usercount'])
 for message in consumer:
     print("========= New Message =============")
     print (message.value)

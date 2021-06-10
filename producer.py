@@ -38,15 +38,16 @@ for _ in range(0,10):
         # we have an existing user lets add a page count to that
 
         #lets check if we have an existing page count
-        pageId = users.get(view["pageId"],None)
+        uid = view["userId"]
+        pageId = users[uid].get(view["pageId"],None)
         if pageId == None:
             # lets add a new page to the user
-            users[view["pageId"]] = 1
-            producer.send(usercount,{"userId":view["userId"], "pages":users[view["userId"]]})
+            users[uid][view["pageId"]] = 1
+            producer.send(usercount,{"userId":uid, "pages":users[uid]})
         else:
             # we have an existing page in the user, lets increase the count
-            users[view["pageId"]] += 1
-            producer.send(usercount,{"userId":view["userId"], "pages":users[view["userId"]]})
+            users[uid][view["pageId"]] += 1
+            producer.send(usercount,{"userId":uid, "pages":users[uid]})
 
     
 producer.flush()
